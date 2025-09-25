@@ -21,8 +21,8 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # grab gosu for easy step-down from root
-# https://github.com/tianon/gosu/releases
-ENV GOSU_VERSION 1.17
+# https://github.com/appscode-images/gosu/releases
+ENV GOSU_VERSION 1.18
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
@@ -30,22 +30,22 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*; \
 	arch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
 	case "$arch" in \
-		'amd64') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64'; sha256='bbc4136d03ab138b1ad66fa4fc051bafc6cc7ffae632b069a53657279a450de3' ;; \
-		'arm64') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-arm64'; sha256='c3805a85d17f4454c23d7059bcb97e1ec1af272b90126e79ed002342de08389b' ;; \
-		'armel') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-armel'; sha256='f9969910fa141140438c998cfa02f603bf213b11afd466dcde8fa940e700945d' ;; \
-		'i386') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-i386'; sha256='087dbb8fe479537e64f9c86fa49ff3b41dee1cbd28739a19aaef83dc8186b1ca' ;; \
-		'mips64el') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-mips64el'; sha256='87140029d792595e660be0015341dfa1c02d1181459ae40df9f093e471d75b70' ;; \
-		'ppc64el') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-ppc64el'; sha256='1891acdcfa70046818ab6ed3c52b9d42fa10fbb7b340eb429c8c7849691dbd76' ;; \
-		'riscv64') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-riscv64'; sha256='38a6444b57adce135c42d5a3689f616fc7803ddc7a07ff6f946f2ebc67a26ba6' ;; \
-		's390x') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-s390x'; sha256='69873bab588192f760547ca1f75b27cfcf106e9f7403fee6fd0600bc914979d0' ;; \
-		'armhf') url='https://github.com/tianon/gosu/releases/download/1.17/gosu-armhf'; sha256='e5866286277ff2a2159fb9196fea13e0a59d3f1091ea46ddb985160b94b6841b' ;; \
+		'amd64') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-amd64'; sha256='eb89541ad585eb4a9c6985deef79d3811b6ad90474b8ad5c51803646fa4e03f4' ;; \
+		'arm64') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-arm64'; sha256='3607617a844355ba6fd45f15020f76b3d32a97a80d34f63eda9e972e7b6e93e4' ;; \
+		'armel') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-armel'; sha256='a8b066cfc418b0a4a9e075d7f1b081d177784a5244e3f6f6282f5b88fb92c11d' ;; \
+		'i386') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-i386'; sha256='38dbfedaa7e7b8c830b765e4d6844dadbe9a52ecd09fd7564ffb0c810e54b1aa' ;; \
+		'mips64el') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-mips64el'; sha256='f0b17f389f35ac3fe21ea8b022e14163177be0f4080a181804a286c1c353ee4e' ;; \
+		'ppc64el') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-ppc64el'; sha256='437bc48f40535af3d212bf6c380707980d060fca0a5d9ed2b9cbb91c263629f6' ;; \
+		'riscv64') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-riscv64'; sha256='fcdd8d7d4970379291bb1c7359fbdb075df3103af0a109387a32294a9e0c3d24' ;; \
+		's390x') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-s390x'; sha256='526a7b457657845f1a949a7f4af61b11963e129fa1d4c6e432bbf662f71dd2ca' ;; \
+		'armhf') url='https://github.com/appscode-images/gosu/releases/download/1.18/gosu-armhf'; sha256='266065bdd425da532f091a31ac6c4882ec0b4cbe0b38a484e8bc44f0b2556b45' ;; \
 		*) echo >&2 "error: unsupported gosu architecture: '$arch'"; exit 1 ;; \
 	esac; \
 	wget -O /usr/local/bin/gosu.asc "$url.asc"; \
 	wget -O /usr/local/bin/gosu "$url"; \
 	echo "$sha256 */usr/local/bin/gosu" | sha256sum -c -; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B40CA2528AA594E4D5EB1A4A465B649B013DFC54; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
